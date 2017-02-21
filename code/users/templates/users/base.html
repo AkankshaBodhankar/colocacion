@@ -1,0 +1,42 @@
+{% load static %}
+<html>
+<head>
+  <title>Colocacion</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'users/tests.css' %}" >
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+  <nav class="navbar navbar-inverse-right" data-spy="scroll" data-offset-top="197" style="background-color:#012951;height:70px;color:white;padding-top:10px; font-size:20px";>
+  <div class="container-fluid">
+<div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span> 
+		  <span class="icon-bar"></span>                        
+
+      </button>
+      <a class="navbar-brand" href="#">COLOCACION</a>
+    </div>
+    <div>
+      <div class="collapse navbar-collapse" id="myNavbar" style="color:white";>
+        <ul class="nav navbar-nav navbar-right" >
+         <li class="active"><a href="{% url 'users:dashboard' %}">DASHBOARD</a></li>
+          <li><a href="{% url 'users:profile' %}">PROFILE</a></li>
+          <li ><a href="{% url 'users:tests' %}">TESTS</a></li>
+          <li ><a href="{% url 'users:jobs' %}">JOBS</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		</ul>
+		
+		  </div>
+		  </div>
+		  </div>
+</nav>
+{% block content %}
+{% endblock %}
+</body>
+</html>

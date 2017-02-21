@@ -1,0 +1,118 @@
+{% extends 'users/base.html' %}
+{% block content %}
+
+<div class="container" style="">
+{% if messages %}
+    {% for message in messages %}
+    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+</div>
+
+<div class="panel panel-primary "  style="margin-top:5px;margin-left:180px;margin-right:180px;" class="mainbox col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2">
+
+	<div class="panel-heading" style="background-color:#012951">
+        	<h3 class="panel-title">Edit Profile</h3>
+			 
+	</div>
+	<div class="panel-body">
+        <form id="signupform" class="form-horizontal" method="POST" role="form" >{% csrf_token %}
+                                    
+                                <div class="form-group ">
+                                    <label for="email" class="col-md-4 control-label">Email</label>
+                                    <div class="col-md-4">
+                                       {{form1.email}}
+                                    </div>
+                                </div>
+								  <div class="form-group">
+                                    <label for="name" class="col-md-4 control-label">Name</label>
+                                    <div class="col-md-4">
+                                        {{form1.name}}
+                                    </div>
+                                </div>
+                                
+                                    <div class="form-group">
+                                    <label for="city" class="col-md-4 control-label">City</label>
+                                    <div class="col-md-4">
+                                        {{form1.city}}
+                                    </div>
+                                </div>
+								 <div class="form-group">
+                                    <label for="mobileno" class="col-md-4 control-label">Mobile No</label>
+                                    <div class="col-md-4">
+                                        {{form1.mobile_num}}
+                                    </div>
+                                </div>
+								 <div class="form-group">
+                                    <label for="clgname" class="col-md-4 control-label">College</label>
+                                    <div class="col-md-4">
+                                        {{form2.college_name}}
+                                    </div>
+                                </div>
+								<div class="form-group">
+                                    <label for="clgname" class="col-md-4 control-label">Branch</label>
+                                    <div class="col-md-4">
+                                      {{form2.branch}}
+                                    </div>
+                                </div>
+								<div class="form-group">
+                                    <label for="degree" class="col-md-4 control-label">Degree</label>
+                                    <div class="col-md-4">
+                                       {{form2.degree}}
+                                    </div>
+                                </div>
+								<div class="form-group">
+                                    <label for="degreepercent" class="col-md-4 control-label">Aggregate</label>
+                                    <div class="col-md-4">
+                                       {{form2.degree_percent}}
+                                    </div>
+                                </div>
+								<div class="form-group">
+                                    <label for="interpercent" class="col-md-4 control-label">Inter Percentage</label>
+                                    <div class="col-md-4">
+                                        {{form2.inter_percent}}
+                                    </div>
+                                </div>
+								<div class="form-group">
+                                    <label for="sscpercent" class="col-md-4 control-label">SSC  Percentage</label>
+                                    <div class="col-md-4">
+                                       {{form2.ssc_percent}}
+                                    </div>
+                                </div>
+								                                                                <div class="form-group">
+                                    <label for="skills" class="col-md-4 control-label">Skills</label>
+                                    <div class="col-md-4">
+                                      {{form2.skills}}
+                                    </div>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="interests" class="col-md-4 control-label">Interests</label>
+                                    <div class="col-md-4">
+                                        {{form2.interests}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-md-4 control-label">Type your password for confirmation</label>
+                                    <div class="col-md-4">
+                                        {{form1.password}}
+                                        
+                                    </div>
+                                </div>
+
+           <div class="form-group">
+                                    <!-- Button -->                                        
+                                    <div class="col-md-offset-4 col-md-9">
+                                        <input id="btn-signup" type="submit" class="btn btn-info">
+
+   
+                                    
+                                    </div>
+                             </div>
+	</div>
+	 
+
+								</form>
+								</div>
+								</div>
+                                    
+{% endblock %}                        

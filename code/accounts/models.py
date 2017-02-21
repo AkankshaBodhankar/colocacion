@@ -5,9 +5,9 @@ from django import forms
 class UserDetails(models.Model):
 	email = models.EmailField(max_length=200, primary_key=True, blank=False)
 	name = models.CharField(max_length=200, blank=False)
-	password = models.CharField(max_length=100, default="hi")
+	password = models.CharField(max_length=100)
 	city = models.CharField(max_length=200)
-	mobile_num = models.IntegerField(max_length=15)
+	mobile_num = models.IntegerField()
 	def __str__(self):
 	    return self.email
 
@@ -32,11 +32,11 @@ class UserProfile(models.Model):
 	skills = models.CharField(max_length=300)
 	interests = models.CharField(max_length=300)
 	def __str__(self):
-	    return self.email
+	    return str(self.email)
 
 class UserExperience(models.Model):
 	email = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-	no_of_years = models.IntegerField(max_length=2)
+	no_of_years = models.IntegerField()
 	job_designation = models.CharField(max_length=100)
 	keywords = models.CharField(max_length=300)
 	def __str__(self):
