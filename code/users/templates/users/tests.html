@@ -23,12 +23,9 @@
           <h1>Take Tests</h1>
         </div>
         <div class="panel-body">
-          <button type="button" class="btn btn-success btn-arrow-right">EASY LEVEL</button>
-		            <button type="button" class="btn btn-success btn-arrow-right">MEDIUM</button>
-					<button type="button" class="btn btn-success btn-arrow-right">MODERATE</button>
-
-          <button type="button" class="btn btn-success btn-arrow-right">HARD</button>
-
+          <button type="button" class="btn btn-success btn-arrow-right" onclick="location.href='{% url 'users:taketests' tlevel='easy' %}'">EASY</button>
+		      <button type="button" class="btn btn-success btn-arrow-right" onclick="location.href='{% url 'users:taketests' tlevel='medium' %}'">MEDIUM</button>
+					<button type="button" class="btn btn-success btn-arrow-right" onclick="location.href='{% url 'users:taketests' tlevel='difficult' %}'">Difficult</button>
         </div>
        
       </div>      

@@ -1,13 +1,11 @@
 from django.db import models
 from accounts.models import UserDetails
 
-# Create your models here.
 class Tests(models.Model):
-	"""docstring for ClassName"""
 	LEVELS=(
-		('Easy','Easy'),
-		('Medium','Medium'),
-		('Difficult','Difficult'),
+		('easy','easy'),
+		('medium','medium'),
+		('difficult','difficult'),
 		)
 	test_id = models.AutoField(primary_key=True)
 	title = models.CharField(max_length=300, blank=False)
@@ -17,22 +15,18 @@ class Tests(models.Model):
 		return self.title
 
 class Questions(models.Model):
-	CHOICE = (
-        ('1', '1'),
-        ('2', '2'),
-        ('3', '3'),
-        ('4', '4'),
-    )
 	test_id = models.ForeignKey(Tests, on_delete=models.CASCADE)
-	question_id = models.IntegerField()
-	title = models.CharField(max_length=1000)
-	choice1 = models.CharField(max_length=200)
-	choice2 = models.CharField(max_length=200)
-	choice3 = models.CharField(max_length=200)
-	choice4 = models.CharField(max_length=200)
-	correct_choice = models.IntegerField(choices=CHOICE)
+	question_id = models.IntegerField(primary_key=True)
+	question_text = models.CharField(max_length=1000)
+	correct_choice = models.CharField(max_length=1000)
 	def __str__(self):
-	    return self.question_id
+	    return str(self.question_id)
+
+class Choice(models.Model):
+    question_id = models.ForeignKey(Questions, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    def __str__(self):
+        return self.choice_text
 
 class Jobs(models.Model):
 	job_id = models.AutoField(primary_key=True)
@@ -50,5 +44,6 @@ class JobsApplied(models.Model):
 class TestsTaken(models.Model):
 	email = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
 	test_id = models.ForeignKey(Tests, on_delete=models.CASCADE)
+	marks_obtained = models.IntegerField(default=0)
 
   

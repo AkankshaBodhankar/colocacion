@@ -1,0 +1,21 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="background-color:#012951;color:white">{{ test.title }}</div>
+    <div class="panel-body">
+       <ul>
+        Instruction:
+        <li>Total number of questions : 20 </li>
+        <li>Time alloted : 20 minutes </li>
+        <li>Each question carry 1 mark, no negative marks </li>
+        <li>DO NOT refresh the page</li>
+        All the best :-)
+      </ul>
+       <button type="button" class="btn btn-success" onclick="location.href='{% url 'users:question' testid=test.test_id questionid=question.question_id %}'">Start Test</button>
+    </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

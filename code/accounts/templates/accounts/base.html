@@ -1,0 +1,49 @@
+{% load static %}
+<html>
+<head>
+  <title>Colocacion</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'accounts/login.css' %}" >
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<script>
+$(document).ready(function(){
+    $(".nav-tabs a").click(function(){
+        $(this).tab('show');
+    });
+       $('#btn-signup').click(function(){
+        $('.alert').show()
+    }) 
+});
+</script>
+<body>
+
+   <div>  
+     <div class="caption1">
+     <h1>COLOCACION</h1><small>A Job Recommendation System</small>
+   </div>
+
+   <div class="container" style="width:100px;">
+{% if messages %}
+  <div class="row">
+    <div class="message">
+    {% for message in messages %}
+    <p 
+    {% if message.tags == "success" %} class="alert alert-success" {% endif %} 
+    {% if message.tags == "error" %} class="alert alert-danger" {% endif %} 
+    {% if message.tags == "info" %} class="alert alert-info" {% endif %} 
+    {% if message.tags == "warning" %} class="alert alert-warning" {% endif %} 
+    >{{ message }}</p>
+    {% endfor %}
+
+    </div>
+  </div>
+{% endif %}
+</div>
+
+   {% block content %}
+   {% endblock %}
+</body>

@@ -29,13 +29,32 @@
           <li><a href="{% url 'users:profile' %}">PROFILE</a></li>
           <li ><a href="{% url 'users:tests' %}">TESTS</a></li>
           <li ><a href="{% url 'users:jobs' %}">JOBS</a></li>
-      <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      <li><a href="{% url 'users:logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 		</ul>
 		
 		  </div>
 		  </div>
 		  </div>
 </nav>
+
+<div class="container">
+{% if messages %}
+  <div class="row">
+    <div class="message">
+    {% for message in messages %}
+    <p 
+    {% if message.tags == "success" %} class="alert alert-success" {% endif %} 
+    {% if message.tags == "error" %} class="alert alert-danger" {% endif %} 
+    {% if message.tags == "info" %} class="alert alert-info" {% endif %} 
+    {% if message.tags == "warning" %} class="alert alert-warning" {% endif %} 
+    >{{ message }}</p>
+    {% endfor %}
+
+    </div>
+  </div>
+{% endif %}
+</div>
+
 {% block content %}
 {% endblock %}
 </body>

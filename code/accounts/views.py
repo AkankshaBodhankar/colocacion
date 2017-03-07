@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from .forms import UserDetailsForm, UserProfileForm
 from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
+from django.contrib import messages
 from .models import UserDetails
 
 
@@ -32,6 +33,7 @@ def signup(request):
             userdetails.save()  
             userprofile.email = userdetails
             userprofile.save()
+            messages.success(request, 'Successfully Registered! Sign in now!')
             return redirect('/accounts/login/')
     else:
         form1 = UserDetailsForm(prefix="form1")

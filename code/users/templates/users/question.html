@@ -1,0 +1,33 @@
+<html>
+<head>
+  <title>Colocacion</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+<body>
+<div class="container" style="margin-top: 50px;width: 800px">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="background-color:#012951;color:white">{{ test.title }}</div>
+    <div class="panel-body">
+      <h4>{{question.question_id}}. {{ question.question_text }}</h4>
+
+			{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+			<form action="{% url 'users:countmarks' question_id=question.question_id %}" method="post">
+			{% csrf_token %}
+			{% for choice in question.choice_set.all %}
+			    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" required/>
+			    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+			{% endfor %}
+
+            <input type="submit" class="btn btn-success" value="Save & Next">
+       </form>
+    </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
