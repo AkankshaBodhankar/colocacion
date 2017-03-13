@@ -14,19 +14,6 @@ class Tests(models.Model):
 	def __str__(self):
 		return self.title
 
-class Jobs(models.Model):
-	job_id = models.AutoField(primary_key=True)
-	job_title = models.CharField(max_length=300, blank=False)
-	company_name = models.CharField(max_length=50, blank=False)
-	salary = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
-	desc = models.CharField(max_length=1000, blank=False)
-	def __str__(self):
-	    return self.job_id
-
-class JobsApplied(models.Model):
-	email = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-	job_id = models.ForeignKey(Jobs, on_delete=models.CASCADE)
-
 class TestsTaken(models.Model):
 	email = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
 	test_id = models.ForeignKey(Tests, on_delete=models.CASCADE)

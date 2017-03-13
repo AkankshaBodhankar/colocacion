@@ -1,0 +1,28 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<div id="pricing" class="container-fluid">
+ 
+  <div class="row slideanim">
+    <div class="col-sm-8 col-xs-10">
+      <div class="panel panel-default text-center">
+        <div class="panel-heading" style="background-color:#012951;color:white">
+          <h1>Jobs you have applied</h1>
+        </div>
+        <div class="panel-body">
+          {{message}}
+            {% for job in jobs %}
+            
+          <h3 for="test{{ forloop.counter }}">{{ job.job_id }}</h3>
+            <h5>Job Role: {{ job.job_role }}  {{ job.job_type }}<br><br>
+              Experience: {{ job.experience_required }} 
+              Salary : {{ job.salary }} lakh
+              </h5>
+          {% endfor %}
+        </div>
+        
+      </div>      
+    </div>       
+    
+  </div>
+</div>
+{% endblock %}

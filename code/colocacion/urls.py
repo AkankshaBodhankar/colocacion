@@ -19,6 +19,7 @@ from accounts import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^jobs/', include('jobs.urls', namespace="jobs")),
     url(r'^$', views.index, name='index'),
     url(r'^accounts/', include('accounts.urls', namespace="accounts")),
     url(r'^users/', include('users.urls', namespace="users"))

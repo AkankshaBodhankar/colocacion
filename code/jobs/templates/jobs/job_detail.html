@@ -1,0 +1,22 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<div class="container" style="margin-top: 20px;width: 800px;">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="background-color:#012951;color:white; text-align: center"><h2>Job Description</h2></div>
+    <div class="panel-body" style="overflow: auto;">
+     
+          <h3 class="head">{{ job.job_title }}</h3>
+          <h5 class="sub-head">Job Role: {{ job.job_role }}  {{ job.job_type }}<br><br>
+              Experience: {{ job.experience_required }} <br><br>
+              Salary : {{ job.salary }} lakh <br><br>
+              Location : {{ job.location }} <br><br>
+              Skills set : {{ job.skills_set }} <br><br>
+              Description : <br><br> {{ job.desc }}
+
+          </h5>
+          <button type="button" class="btn btn-success" onclick="location.href='{% url 'jobs:apply' job_id=job.job_id %}'">Apply to this Job</button>
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

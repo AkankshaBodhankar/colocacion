@@ -77,7 +77,6 @@ def question(request, testid, questionid):
 def results(request):
 	return HttpResponse("This is results page!")
 
-
 def countmarks(request, test_id, question_id):
 	if Questions.objects.filter(test_id=test_id, question_id=question_id).exists():
 	    question = get_object_or_404(Questions, test_id=test_id, question_id=question_id)
@@ -97,18 +96,6 @@ def countmarks(request, test_id, question_id):
 	        return redirect('/users/question/'+str(test_id)+'/'+str(nques))
 	else:
 		return redirect('/users/results')
-
-def dashboard(request):
-	if 'email' in request.session:
-		return render(request, 'users/dashboard.html')
-	else:
-		return redirect('/accounts/login')
-
-def jobs(request):
-	if 'email' in request.session:
-		return render(request, 'users/jobs.html')
-	else:
-		return redirect('/accounts/login')
 
 def logout(request):
 	if 'email' in request.session:
