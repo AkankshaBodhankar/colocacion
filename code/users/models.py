@@ -14,20 +14,6 @@ class Tests(models.Model):
 	def __str__(self):
 		return self.title
 
-class Questions(models.Model):
-	test_id = models.ForeignKey(Tests, on_delete=models.CASCADE)
-	question_id = models.IntegerField(primary_key=True)
-	question_text = models.CharField(max_length=1000)
-	correct_choice = models.CharField(max_length=1000)
-	def __str__(self):
-	    return str(self.question_id)
-
-class Choice(models.Model):
-    question_id = models.ForeignKey(Questions, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    def __str__(self):
-        return self.choice_text
-
 class Jobs(models.Model):
 	job_id = models.AutoField(primary_key=True)
 	job_title = models.CharField(max_length=300, blank=False)
@@ -46,4 +32,23 @@ class TestsTaken(models.Model):
 	test_id = models.ForeignKey(Tests, on_delete=models.CASCADE)
 	marks_obtained = models.IntegerField(default=0)
 
+class Questions(models.Model):
+	class Meta:
+		unique_together = (("test_id","question_id"),)
+	test_id = models.ForeignKey(Tests, on_delete=models.CASCADE)
+	question_id = models.IntegerField()
+	question_text = models.CharField(max_length=1000)
+	correct_choice = models.CharField(max_length=1000)
+	def __str__(self):
+	    return str(self.question_text)
+
+class Choice(models.Model):
+	class Meta:
+		unique_together = (("test_id","question_id","choice_id"),)
+	test_id = models.ForeignKey(Tests, on_delete=models.CASCADE)
+	question_id = models.ForeignKey(Questions, on_delete=models.CASCADE,)
+	choice_id = models.IntegerField()
+	choice_text = models.CharField(max_length=1000)
+	def __str__(self):
+	    return self.choice_text
   

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse, HttpResponseRedirect
-from accounts.models import UserDetails, UserProfile
-from accounts.forms import UserDetailsForm, UserProfileForm
-from users.models import Tests, Questions, TestsTaken, Choice
+from accounts.models import *
+from accounts.forms import *
+from users.models import *
 from django.contrib import messages
 from django.urls import reverse
 
@@ -41,17 +41,22 @@ def profileedit(request):
 
 def tests(request):
 	if 'email' in request.session:
-		return render(request, 'users/tests.html')
+		if TestsTaken.objects.filter(email=request.session['email']).exists():
+			teststaken = TestsTaken.objects.filter(email=request.session['email'])
+			return render(request, 'users/tests.html', {'tests':teststaken})
+		else:
+			return render(request, 'users/tests.html',{'message':"No tests taken"})
 	else:
 		return redirect('/accounts/login')
 
 def taketests(request, tlevel):
 	test = get_object_or_404(Tests, level=tlevel)
-	question = Questions.objects.get(test_id=test.test_id, question_id=1)
 	if TestsTaken.objects.filter(email=request.session['email'], test_id=test.test_id).exists():
+		teststaken = TestsTaken.objects.filter(email=request.session['email'])
 		messages.error(request, 'Test already taken')
-		return render(request,'users/tests.html')
+		return render(request,'users/tests.html',{'tests':teststaken})
 	else:
+		question = Questions.objects.get(test_id=test.test_id, question_id=1)
 		request.session['marks'] = 0
 		return render(request, 'users/taketests.html', {'question':question, 'test':test})
 
@@ -62,7 +67,7 @@ def question(request, testid, questionid):
 		nques = int(questionid)+1
 		return render(request, 'users/question.html', {'test':test, 'question':question, 'next':nques})
 	else:
-		marks = request.session['marks']
+		marks = int(request.session['marks'])
 		del request.session['marks']
 		p = TestsTaken(email=UserDetails.objects.get(pk=request.session['email']), 
 			test_id=Tests.objects.get(test_id=testid), marks_obtained=marks)
@@ -73,9 +78,9 @@ def results(request):
 	return HttpResponse("This is results page!")
 
 
-def countmarks(request, question_id):
-	if Questions.objects.filter(question_id=question_id).exists():
-	    question = get_object_or_404(Questions, pk=question_id)
+def countmarks(request, test_id, question_id):
+	if Questions.objects.filter(test_id=test_id, question_id=question_id).exists():
+	    question = get_object_or_404(Questions, test_id=test_id, question_id=question_id)
 	    try:
 	        selected_choice = question.choice_set.get(pk=request.POST['choice'])
 	    except (KeyError, Choice.DoesNotExist):
@@ -85,9 +90,11 @@ def countmarks(request, question_id):
 	        })
 	    else:
 	        if str(selected_choice) == str(question.correct_choice):
-	        	request.session['marks'] = request.session['marks'] + 25
+	        	noq = Questions.objects.filter(test_id=test_id).count()
+	        	test = Tests.objects.get(test_id=test_id)
+	        	request.session['marks'] = request.session['marks'] + (test.total_marks/noq)
 	        nques = int(question_id)+1
-	        return redirect('/users/question/1/'+str(nques))
+	        return redirect('/users/question/'+str(test_id)+'/'+str(nques))
 	else:
 		return redirect('/users/results')
 

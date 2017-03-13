@@ -10,13 +10,13 @@
 <body>
 <div class="container" style="margin-top: 50px;width: 800px">
   <div class="panel panel-default">
-    <div class="panel-heading" style="background-color:#012951;color:white">{{ test.title }}</div>
+    <div class="panel-heading" style="background-color:#012951;color:white">{{ test.title }}{{ test.test_id }}</div>
     <div class="panel-body">
       <h4>{{question.question_id}}. {{ question.question_text }}</h4>
 
 			{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-			<form action="{% url 'users:countmarks' question_id=question.question_id %}" method="post">
+			<form action="{% url 'users:countmarks' test_id=test.test_id question_id=question.question_id %}" method="post">
 			{% csrf_token %}
 			{% for choice in question.choice_set.all %}
 			    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" required/>

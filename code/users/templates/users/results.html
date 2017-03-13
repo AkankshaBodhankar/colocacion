@@ -1,5 +1,19 @@
+<html>
+<head>
+  <title>Colocacion</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+<body>
+<center>
 <h2>Your Results for {{test.title}}</h2>
 
 {{marks}}/{{test.total_marks}}
-
-<button type="button" class="btn btn-success" onclick="location.href='{% url 'users:tests' %}'">Difficult</button>
+<br>
+<button type="button" class="btn btn-success" onclick="location.href='{% url 'users:tests' %}'">OK</button>
+</center>
+</body>
+</html>

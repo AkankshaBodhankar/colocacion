@@ -9,10 +9,12 @@
           <h1>My Tests</h1>
         </div>
         <div class="panel-body">
-       <h3>Tests</h3>
-	   <h3>Scores</h3>
-	   <h3>Tests</h3>
-	   <h3>Scores</h3>
+            {{message}}
+            {% for test in tests %}
+            
+          <h3 for="test{{ forloop.counter }}">{{ test.test_id }}</h3>
+          <h4>Your score:{{ test.marks_obtained }}</h4>
+          {% endfor %}
         </div>
         
       </div>      
