@@ -10,7 +10,7 @@ class Jobs(models.Model):
 		)
 	job_id = models.AutoField(primary_key=True)
 	job_role = models.CharField(max_length=500)
-	job_title = models.CharField(max_length=300, blank=False)
+	job_title = models.CharField(max_length=300, unique=True, blank=False)
 	job_type = models.CharField(max_length=100)
 	experience_required = models.CharField(max_length=500)
 	company_name = models.CharField(max_length=50, blank=False)

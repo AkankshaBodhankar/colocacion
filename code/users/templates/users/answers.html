@@ -1,0 +1,46 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<div class="container" style="margin-top: 20px;width: 800px;">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="background-color:#012951;color:white; text-align: center"><h2>Your Results</h2></div>
+    <div class="panel-body" style="overflow: auto;">
+        <h5 style="text-align: center">{{message}}</h5>
+
+          {% for test in tests %}  
+
+            <a href="{% url 'users:answers' test_id=test.test_id %}"><h3 for="test{{ forloop.counter }}">{{ test.test_id__title }}</h3></a>
+            <h4>Level: {{ test.test_id__level }}&nbsp Your score: {{ test.marks_obtained }} out of {{ test.test_id__total_marks }}</h4>
+            <br>
+
+          {% endfor %}
+
+          {% for question in questions %}
+             <b>{{ forloop.counter }}. {{ question.question_text }}</b>
+               <br><br>
+
+             {% for choice in question.choice_set.all %}
+                <input type="radio" value="{{ choice.id }}" disabled />
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+
+                {% if choice.choice_text == question.correct_choice %}
+                  <span class="glyphicon glyphicon-ok" style="color:green"></span>
+                {% endif %} 
+
+
+                {% for answer in answers %}            
+                    {% if answer.choice_id_selected == choice.choice_text %}
+                      {% if answer.choice_id_selected != question.correct_choice %}
+                        <span class="glyphicon glyphicon-remove" style="color:darkred"></span>
+                      {% endif %}
+                    {% endif %}
+                {% endfor %}</br>
+
+
+              {% endfor %} <br>
+          {% endfor %}
+
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

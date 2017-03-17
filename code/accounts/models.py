@@ -7,7 +7,7 @@ class UserDetails(models.Model):
 	name = models.CharField(max_length=200, blank=False)
 	password = models.CharField(max_length=100)
 	city = models.CharField(max_length=200)
-	mobile_num = models.IntegerField()
+	mobile_num = models.CharField(max_length=15)
 	def __str__(self):
 	    return self.email
 

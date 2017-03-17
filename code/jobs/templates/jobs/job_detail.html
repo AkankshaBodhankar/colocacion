@@ -14,7 +14,11 @@
               Description : <br><br> {{ job.desc }}
 
           </h5>
+          {% if message == "disable" %}
+            <button type="button" class="btn btn-success" disabled>Already applied</button>
+          {% else %}
           <button type="button" class="btn btn-success" onclick="location.href='{% url 'jobs:apply' job_id=job.job_id %}'">Apply to this Job</button>
+          {% endif %}
     </div>
     </div>
   </div>

@@ -13,6 +13,8 @@ def index(request):
 	return render(request,'accounts/index.html')
         
 def login(request):
+    if 'email' in request.session:
+        return redirect('/jobs/dashboard')
     if request.method == 'POST':
         user = get_object_or_404(UserDetails, pk=request.POST['email'])
         if(user.password==request.POST['password']):
@@ -24,6 +26,8 @@ def login(request):
         return render(request, 'accounts/login.html')
 
 def signup(request):
+    if 'email' in request.session:
+        return redirect('/jobs/dashboard')
     if request.method == 'POST':
         form1 = UserDetailsForm(request.POST,prefix="form1")
         form2 = UserProfileForm(request.POST,prefix="form2")

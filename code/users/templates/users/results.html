@@ -6,14 +6,21 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type = "text/javascript" >
+   function preventBack(){window.history.forward();}
+    setTimeout("preventBack()", 0);
+    window.onunload=function(){null};
+  </script>
   </head>
 <body>
 <center>
-<h2>Your Results for {{test.title}}</h2>
-
-{{marks}}/{{test.total_marks}}
+<h2 style="margin-top: 50px;">Your Results for {{test.title}}</h2>
+ <h3>{{marks}}/{{test.total_marks}}</h3>
+ 
 <br>
-<button type="button" class="btn btn-success" onclick="location.href='{% url 'users:tests' %}'">OK</button>
+<button type="button" class="btn btn-success" onclick="location.href='{% url 'users:tests' %}'">Finish</button>
+<br><br>
+<button type="button" class="btn btn-success" onclick="location.href='{% url 'users:answers' test_id=test.test_id %}'">See Full Report</button>
 </center>
 </body>
 </html>

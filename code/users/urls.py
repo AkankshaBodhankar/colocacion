@@ -10,5 +10,6 @@ urlpatterns = [
      url(r'^countmarks/(?P<test_id>[0-9]+)/(?P<question_id>[0-9]+)/$', views.countmarks, name='countmarks'),
      url(r'^question/(?P<testid>[0-9]+)/(?P<questionid>[0-9]+)/$', views.question, name='question'),
      url(r'^results/$', views.results, name="results"),
+     url(r'^answers/(?P<test_id>[0-9]+)/$', views.answers, name="answers"),
      url(r'^logout/$', views.logout, name="logout"),
 ]

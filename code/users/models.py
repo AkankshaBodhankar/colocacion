@@ -33,9 +33,18 @@ class Choice(models.Model):
 	class Meta:
 		unique_together = (("test_id","question_id","choice_id"),)
 	test_id = models.ForeignKey(Tests, on_delete=models.CASCADE)
-	question_id = models.ForeignKey(Questions, on_delete=models.CASCADE,)
+	question_id = models.ForeignKey(Questions, on_delete=models.CASCADE)
 	choice_id = models.IntegerField()
 	choice_text = models.CharField(max_length=1000)
 	def __str__(self):
 	    return self.choice_text
-  
+
+class Answers(models.Model):
+	class Meta:
+		unique_together = (("email","test_id","question_id"),)
+	test_id = models.ForeignKey(Tests, on_delete=models.CASCADE)
+	email = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+	question_id = models.ForeignKey(Questions, on_delete=models.CASCADE)
+	choice_id_selected = models.CharField(max_length=1000)
+	def __str__(self):
+	    return str(self.choice_id_selected)  
