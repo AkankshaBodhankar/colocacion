@@ -10,9 +10,9 @@
         </div>
         <div class="panel-body" style="text-align: left">
           <h5 style="text-align: center">{{message}}</h5>
-            {% for job in jobs %}
             
-          <a href="{% url 'jobs:job_detail' job_id=job.job_id %}"><h3 for="test{{ forloop.counter }}">{{ forloop.counter }}. {{ job.job_id__job_title }}</h3></a>
+            {% for job in jobs %}
+             <a href="{% url 'jobs:job_detail' job_id=job.job_id %}"><h3 for="test{{ forloop.counter }}">{{ forloop.counter }}. {{ job.job_id__job_title }}</h3></a>
 
            <h5><i>Job Role:</i> {{ job.job_id__job_role }}  {{ job.job_id__job_type }}<br><br>
               <i>Experience:</i> {{ job.job_id__experience_required }} 

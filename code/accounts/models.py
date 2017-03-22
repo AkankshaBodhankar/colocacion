@@ -26,9 +26,9 @@ class UserProfile(models.Model):
 	college_name = models.CharField(max_length=200)
 	branch = models.CharField(max_length=15)
 	degree = models.CharField(max_length=10, choices=DEGREE)
-	degree_percent = models.DecimalField(max_digits=3, decimal_places=1)
-	inter_percent = models.DecimalField(max_digits=3, decimal_places=1)
-	ssc_percent = models.DecimalField(max_digits=3, decimal_places=1)	
+	degree_percent = models.CharField(max_length=5)
+	inter_percent = models.CharField(max_length=5)
+	ssc_percent = models.CharField(max_length=5)	
 	skills = models.CharField(max_length=300)
 	interests = models.CharField(max_length=300)
 	def __str__(self):

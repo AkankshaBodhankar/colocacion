@@ -12,9 +12,9 @@ class Jobs(models.Model):
 	job_role = models.CharField(max_length=500)
 	job_title = models.CharField(max_length=300, unique=True, blank=False)
 	job_type = models.CharField(max_length=100)
-	experience_required = models.CharField(max_length=500)
+	experience_required = models.IntegerField()
 	company_name = models.CharField(max_length=50, blank=False)
-	salary = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
+	salary = models.IntegerField(blank=False)
 	location = models.CharField(max_length=500)
 	skills_set = models.CharField(max_length=1000)
 	job_class = models.CharField(max_length=1, choices=JOBCLASS)
@@ -25,3 +25,5 @@ class Jobs(models.Model):
 class JobsApplied(models.Model):
 	email = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
 	job_id = models.ForeignKey(Jobs, on_delete=models.CASCADE)
+	def __str__(self):
+	    return str(self.job_id)

@@ -5,13 +5,13 @@
     <div class="panel-heading" style="background-color:#012951;color:white; text-align: center"><h2>Job Description</h2></div>
     <div class="panel-body" style="overflow: auto;">
      
-          <h3 class="head">{{ job.job_title }}</h3>
+          <a href=""><h3>{{ job.job_title }}</h3></a>
           <h5 class="sub-head">Job Role: {{ job.job_role }}  {{ job.job_type }}<br><br>
-              Experience: {{ job.experience_required }} <br><br>
-              Salary : {{ job.salary }} lakh <br><br>
+              Experience: {{ job.experience_required }} years<br><br>
+              Salary : {{ job.salary }} p.a <br><br>
               Location : {{ job.location }} <br><br>
               Skills set : {{ job.skills_set }} <br><br>
-              Description : <br><br> {{ job.desc }}
+              Job Description : <br><br> {{ job.desc }}
 
           </h5>
           {% if message == "disable" %}

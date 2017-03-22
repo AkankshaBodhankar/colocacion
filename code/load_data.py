@@ -33,11 +33,11 @@ with open(csv_filepathname) as f:
     reader = csv.reader(f)
     for row in reader:
         _, created = UserProfile.objects.get_or_create(
-	        	email=row[1],
+	        	email=UserDetails.objects.get(email=row[1]),
 	            college_name=row[5],
 	            branch=row[6],
 	            degree=row[7],
-	            degree_percent=row[13],
+	            degree_percent=row[8],
 	            inter_percent=row[9],
 	            ssc_percent=row[10],
 	            skills=row[11],
