@@ -19,7 +19,7 @@ def login(request):
         user = get_object_or_404(UserDetails, pk=request.POST['email'])
         if(user.password==request.POST['password']):
             request.session['email']=user.email
-            return redirect('/jobs/dashboard/')
+            return redirect('/jobs/dashboard/nofilter/')
         else:
             return render(request, 'accounts/login.html')
     else:

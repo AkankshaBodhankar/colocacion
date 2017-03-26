@@ -13,14 +13,14 @@ class UserDetails(models.Model):
 
 class UserProfile(models.Model):
 	DEGREE = (
-        ('B.Tech/B.E', 'Btech'),
-        ('B.com', 'Bcom'),
+        ('Btech', 'Btech'),
+        ('Bcom', 'Bcom'),
         ('Bsc', 'Bsc'),
-        ('M.Tech', 'Mtech'),
+        ('Mtech', 'Mtech'),
         ('Msc', 'Msc'),
-        ('B.A.','BA'),
-        ('M.B.A','MBA'),
-        ('B.B.A', 'BBA'),
+        ('BA','BA'),
+        ('MBA','MBA'),
+        ('BBA', 'BBA'),
     )
 	email = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
 	college_name = models.CharField(max_length=200)

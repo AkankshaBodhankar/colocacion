@@ -6,6 +6,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 from scipy import spatial
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def jobs(request):
@@ -34,11 +35,10 @@ def apply(request, job_id):
 	job.save()
 	return redirect('/jobs/jobsapplied')
 
-def dashboard(request):
-	#content based algorithm
-	applied = False
+def dashboard(request, filters):
+	jc = 'D'
+	#job-job collaborative filtering algorithm
 	if JobsApplied.objects.filter(email=request.session['email']):
-		applied = True
 		jobs_exclude = JobsApplied.objects.filter(email=request.session['email'])
 		exclude_id = []
 		for job in jobs_exclude:
@@ -90,19 +90,76 @@ def dashboard(request):
 
 		finalnpUser=list(np.concatenate((cvCompNameUser.toarray(), cvDescUser.toarray(),cvJobRoleUser.toarray(),
 			cvJobTitleUser.toarray(),cvJobTypeUser.toarray(),cvLocationUser.toarray(),cvSkillsUser.toarray(),salaryUser,experienceUser), axis=1))
-		
 		similarity=np.array([[1-spatial.distance.cosine(i,j) for j in finalnp] for i in finalnpUser])
 		exc=list(df_exclude["job_id_id"].values)
 		scores=np.sum(similarity,axis=0)
 		predictions=list(reversed(np.argsort(scores)))
 		predictions=[i+1 for i in predictions]
 		finalpred=[i for i in predictions if i not in exc]
-		jobs = Jobs.objects.filter(job_id__in=finalpred[:5])
-	    
+
+		#user-user collaborative filtering algorithm
+		df_col = pd.DataFrame(list(JobsApplied.objects.all().values()))
+		emails=list(set(df_col["email_id"].tolist())) 
+		jobids=list(set(df_col["job_id_id"].tolist()))
+		zeroarray=np.zeros((len(emails),len(jobids)))
+		colab_df=pd.DataFrame(zeroarray, index=emails, columns=jobids)
+		for i in emails:
+			df_temp=df_col[df_col["email_id"]==i]
+			jobid=df_temp["job_id_id"].tolist()
+			for j in jobid:
+				colab_df.ix[i,j]=1
+		curemail=request.session['email']
+		otherusersemail=[i for i in emails if i not in curemail]
+		currentUser=list(colab_df.ix[curemail,:])
+		otherUser=list(colab_df.ix[otherusersemail,:].values)		
+		mostsim=[]
+		for i in otherUser:
+			mostsim.append(1-spatial.distance.cosine(currentUser,i))
+		
+		finalrecoset=[]
+		finalreco=[0]*len(currentUser)
+		usersreco=list(reversed(np.argsort(mostsim)))	
+		for i in usersreco[:5]:
+			usersjobs=list(otherUser[i])
+			finalreco=list(np.array(usersjobs) - np.array(currentUser))
+			for j in range(len(finalreco)):
+				if finalreco[j]<0:
+					finalreco[j]=0	
+			finalrecoset.append(finalreco)	
+
+		final=np.sum(finalrecoset,axis=0)	
+		orderreco=list(reversed(np.argsort(final)));
+		recommendations=[]
+		for i in range(len(orderreco)):
+			if orderreco[i]>0:
+				recommendations.append(jobids[i])
+		finalrecommendations=[i for i in recommendations if i not in exc]
+		for jobid in finalpred:
+			finalrecommendations.append(jobid)
+		finaljobs = set(finalrecommendations)
+	else:
+		#content-based algorithm
+		df = pd.DataFrame(list(UserProfile.objects.filter(email=request.session['email']).values('skills')))
+		cvUserSkills = CountVectorizer()
+		cvUserSkillsVal=cvUserSkills.fit_transform(df["skills"].tolist())
+		finalskillsnp=list((cvUserSkillsVal.toarray()))
+
+		dfjobs = pd.DataFrame(list(Jobs.objects.all().values('job_id','skills_set')))
+		cvSkillsRequiredVal=cvUserSkills.transform(dfjobs["skills_set"].tolist())
+		finalskillsrequirednp=list((cvSkillsRequiredVal.toarray()))
+
+		similarity=np.array([[1-spatial.distance.cosine(i,j) for j in finalskillsnp] for i in finalskillsrequirednp])
+		predictions = []
+		count = 0
+		for sim in similarity:
+			count = count+1
+			if sim>0:
+				predictions.append(count)
+		finaljobs = predictions
+
     #filtering by test results
 	if TestsTaken.objects.filter(email=request.session['email']).exists():
 		teststaken = TestsTaken.objects.filter(email=request.session['email'])
-		jc = 'C'
 		marks = 0
 		count = 0
 		for test in teststaken:
@@ -113,16 +170,33 @@ def dashboard(request):
 			jc = 'A'
 		elif avg>=45 and avg<=50:
 			jc = 'B'
-		if applied:
-			finaljobs = Jobs.objects.filter(job_class = jc, job_id__in = jobs)
-			return render(request, 'jobs/dashboard.html',{'jobs':finaljobs})
 		else:
-			exclude_id = []
-			jobs_exclude = JobsApplied.objects.filter(email=request.session['email'])
-			for job in jobs_exclude:
-				exclude_id.append(job.job_id)
-			if Jobs.objects.filter(job_class=jc).exclude(job_title__in=exclude_id).exists():
-				jobs = Jobs.objects.filter(job_class=jc).exclude(job_title__in = exclude_id)
-			return render(request, 'jobs/dashboard.html',{'jobs':jobs})
-	else:
-		return render(request,'jobs/dashboard.html',{'message':"No jobs available right now"})
+			jc = 'C'
+
+	#processing and rendering
+	if jc != 'D':
+		if filters != "nofilter":
+			if filters == "salary":
+				final_jobs = Jobs.objects.filter(job_class = jc, job_id__in = finaljobs).order_by('-'+filters)
+			else:
+				final_jobs = Jobs.objects.filter(job_class = jc, job_id__in = finaljobs).order_by(filters)
+		else:#when filters = nofilters
+			final_jobs = Jobs.objects.filter(job_class = jc, job_id__in = finaljobs)
+	else:#no tests are taken
+		if filters != "nofilter":
+			if filters == "salary":
+				final_jobs = Jobs.objects.filter(job_id__in = finaljobs).order_by('-'+filters)
+			else:
+				final_jobs = Jobs.objects.filter(job_id__in = finaljobs).order_by(filters)
+		else:#when filters = nofilters
+			final_jobs = Jobs.objects.filter(job_id__in = finaljobs)
+
+	paginator = Paginator(final_jobs, 3)
+	page = request.GET.get('page')
+	try:
+		jobs = paginator.page(page)
+	except PageNotAnInteger:
+		jobs = paginator.page(1)
+	except EmptyPage:
+		jobs = paginator.page(paginator.num_pages)
+	return render(request, 'jobs/dashboard.html',{'jobs': jobs})

@@ -25,7 +25,7 @@
     <div>
       <div class="collapse navbar-collapse" id="myNavbar" style="color:white";>
         <ul class="nav navbar-nav navbar-right" >
-         <li class="active"><a href="{% url 'jobs:dashboard' %}">DASHBOARD</a></li>
+         <li class="active"><a href="{% url 'jobs:dashboard' filters='nofilter' %}">DASHBOARD</a></li>
           <li><a href="{% url 'users:profile' %}">PROFILE</a></li>
           <li ><a href="{% url 'users:tests' %}">TESTS</a></li>
           <li ><a href="{% url 'jobs:jobsapplied' %}">JOBS</a></li>
