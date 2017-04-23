@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 
-# Create your models here.
+# Models for user login and registration
 class UserDetails(models.Model):
 	email = models.EmailField(max_length=200, primary_key=True, blank=False)
 	name = models.CharField(max_length=200, blank=False)
@@ -34,6 +34,7 @@ class UserProfile(models.Model):
 	def __str__(self):
 	    return str(self.email)
 
+# For future use
 class UserExperience(models.Model):
 	email = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
 	no_of_years = models.IntegerField()

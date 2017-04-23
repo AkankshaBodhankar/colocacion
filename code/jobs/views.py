@@ -36,9 +36,9 @@ def apply(request, job_id):
 	return redirect('/jobs/jobsapplied')
 
 def dashboard(request, filters):
-	jc = 'D'
+	jc = "None"
 	#job-job collaborative filtering algorithm
-	if JobsApplied.objects.filter(email=request.session['email']):
+	if JobsApplied.objects.filter(email=request.session['email']).exists():
 		jobs_exclude = JobsApplied.objects.filter(email=request.session['email'])
 		exclude_id = []
 		for job in jobs_exclude:
@@ -168,28 +168,28 @@ def dashboard(request, filters):
 		avg = (marks/count)
 		if avg>=75:
 			jc = 'A'
-		elif avg>=45 and avg<=50:
+		elif avg>=45 and avg<75:
 			jc = 'B'
 		else:
 			jc = 'C'
 
 	#processing and rendering
-	if jc != 'D':
+	if jc != "None":
 		if filters != "nofilter":
 			if filters == "salary":
-				final_jobs = Jobs.objects.filter(job_class = jc, job_id__in = finaljobs).order_by('-'+filters)
+				final_jobs = Jobs.objects.filter(job_class = jc, job_id__in = finaljobs).order_by('-'+filters)[:15]
 			else:
-				final_jobs = Jobs.objects.filter(job_class = jc, job_id__in = finaljobs).order_by(filters)
-		else:#when filters = nofilters
-			final_jobs = Jobs.objects.filter(job_class = jc, job_id__in = finaljobs)
-	else:#no tests are taken
+				final_jobs = Jobs.objects.filter(job_class = jc, job_id__in = finaljobs).order_by(filters)[:15]
+		else:#when filters = nofilter
+			final_jobs = Jobs.objects.filter(job_class = jc, job_id__in = finaljobs)[:15]
+	elif jc == "None":#no tests are taken
 		if filters != "nofilter":
 			if filters == "salary":
-				final_jobs = Jobs.objects.filter(job_id__in = finaljobs).order_by('-'+filters)
+				final_jobs = Jobs.objects.filter(job_id__in = finaljobs).order_by('-'+filters)[:15]
 			else:
-				final_jobs = Jobs.objects.filter(job_id__in = finaljobs).order_by(filters)
+				final_jobs = Jobs.objects.filter(job_id__in = finaljobs).order_by(filters)[:15]
 		else:#when filters = nofilters
-			final_jobs = Jobs.objects.filter(job_id__in = finaljobs)
+			final_jobs = Jobs.objects.filter(job_id__in = finaljobs)[:15]
 
 	paginator = Paginator(final_jobs, 3)
 	page = request.GET.get('page')
@@ -199,4 +199,7 @@ def dashboard(request, filters):
 		jobs = paginator.page(1)
 	except EmptyPage:
 		jobs = paginator.page(paginator.num_pages)
-	return render(request, 'jobs/dashboard.html',{'jobs': jobs})
+	if len(jobs)>0:
+		return render(request, 'jobs/dashboard.html',{'jobs': jobs})
+	else:
+		return render(request, 'jobs/dashboard.html',{'message':"No jobs available right now!"})

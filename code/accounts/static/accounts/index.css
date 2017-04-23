@@ -1,6 +1,36 @@
 body {
-    background: url("images/7.jpg") no-repeat center fixed;
-    background-size: cover;
+  background: url("images/7.jpg") no-repeat center fixed;
+  background-size: cover;
+
+}
+
+blockquote {
+  font-size:35px;
+  color:white;
+  text-align:center;
+}
+
+.caption {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  width: 100%;
+
+}
+
+.caption1 {
+  position: absolute;
+  top: 1%;
+  left: 0;
+  width: 100%;
+  text-align:center;
+
+}
+
+.caption1 h1 {
+ color:white;
+ font-size:55px;
+
 }
 
 .img-overlay {
@@ -9,33 +39,9 @@ body {
   margin-left:630px;
   
 }
-.caption {
-    position: absolute;
-    top: 45%;
-    left: 0;
-    width: 100%;
-}
-.caption1 {
-    position: absolute;
-    top: 1%;
-    left: 0;
-    width: 100%;
-	text-align:center;
 
+small {
+  font-size:18px;
+  color:white;
 }
-.caption1 h1
-{
- color:white;
- font-size:55px;
-}
-small
-{
-font-size:18px;
-color:white;
-}
-blockquote
-{
-font-size:35px;
-color:white;
-text-align:center;
-}
+

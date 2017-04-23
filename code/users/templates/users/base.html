@@ -8,6 +8,19 @@
   <link rel="stylesheet" href="{% static 'users/tests.css' %}" >
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+  $(document).ready(function() {
+        // messages timeout for 10 sec 
+        setTimeout(function() {
+            $('.message').fadeOut('slow');
+        }, 1500); // <-- time in milliseconds, 1000 =  1 sec
+
+        // delete message
+        $('.del-msg').live('click',function(){
+            $('.del-msg').parent().attr('style', 'display:none;');
+        })
+    });
+ </script>
   </head>
   <body>
   <nav class="navbar navbar-inverse-right" data-spy="scroll" data-offset-top="197" style="background-color:#012951;height:70px;color:white;padding-top:10px; font-size:20px";>

@@ -7,27 +7,28 @@ from django.contrib import messages
 from .models import UserDetails
 
 
-
-# Create your views here.
+# Views for login and signup
 def index(request):
 	return render(request,'accounts/index.html')
         
 def login(request):
     if 'email' in request.session:
-        return redirect('/jobs/dashboard')
+        return redirect('/jobs/dashboard/nofilter')
     if request.method == 'POST':
         user = get_object_or_404(UserDetails, pk=request.POST['email'])
         if(user.password==request.POST['password']):
             request.session['email']=user.email
+            messages.success(request, 'Logged in successfully!')
             return redirect('/jobs/dashboard/nofilter/')
         else:
+            messages.error(request, 'Invalid credentials')
             return render(request, 'accounts/login.html')
     else:
         return render(request, 'accounts/login.html')
 
 def signup(request):
     if 'email' in request.session:
-        return redirect('/jobs/dashboard')
+        return redirect('/jobs/dashboard/nofilter')
     if request.method == 'POST':
         form1 = UserDetailsForm(request.POST,prefix="form1")
         form2 = UserProfileForm(request.POST,prefix="form2")

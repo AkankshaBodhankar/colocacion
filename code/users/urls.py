@@ -12,4 +12,5 @@ urlpatterns = [
      url(r'^results/$', views.results, name="results"),
      url(r'^answers/(?P<test_id>[0-9]+)/$', views.answers, name="answers"),
      url(r'^logout/$', views.logout, name="logout"),
+     url(r'^changepassword/$', views.changepassword, name="changepassword"),
 ]

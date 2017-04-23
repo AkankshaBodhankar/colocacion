@@ -11,13 +11,6 @@ def profile(request):
 		userdetails = UserDetails.objects.get(email=request.session['email'])
 		userprofile = UserProfile.objects.get(email=request.session['email'])
 		return render(request, 'users/profile.html', {'form1':userdetails, 'form2':userprofile})
-	if request.method == 'POST':
-		userdetails = UserDetails.objects.get(email=request.session['email'])
-		if(userdetails.password==request.POST['oldpwd'] and request.POST['newpwd']==request.POST['retypenewpwd']):
-			userdetails.password = request.POST['newpwd']
-			userdetails.save()
-			messages.success(request, "Changed password successfully!")
-			return redirect('/users/profile')
 	else:
 		return redirect('/accounts/login')
 
@@ -37,6 +30,7 @@ def profileedit(request):
 					userdetails.save()
 					userprofile.email = userdetails
 					userprofile.save()
+					messages.success(request, "Profile details updated!")
 					return redirect('/users/profile')
 				else:
 					messages.error(request, "Wrong password")
@@ -46,6 +40,23 @@ def profileedit(request):
 		return render(request,'users/profileedit.html',{'form1':form1,'form2':form2})
 	else:
 		return redirect('/accounts/login')
+
+def changepassword(request):
+	if request.method == 'POST':
+		userdetails = UserDetails.objects.get(email=request.session['email'])
+		if(userdetails.password==request.POST['oldpwd'] and request.POST['newpwd']==request.POST['retypenewpwd']):
+			userdetails.password = request.POST['newpwd']
+			userdetails.save()
+			messages.success(request, "Changed password successfully!")
+			return redirect('/users/profile')
+		elif(userdetails.password != request.POST['oldpwd']):
+			messages.error(request, "Wrong password")
+			return redirect('/users/changepassword')
+		elif(request.POST['oldpwd']!=request.POST['retypenewpwd']):
+			messages.error(request, "Passwords do not match")
+			return redirect('/users/changepassword')
+	else:
+		return render(request, "users/changepassword.html")
 
 def tests(request):
 	if 'email' in request.session:
